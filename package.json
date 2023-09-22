@@ -4,8 +4,16 @@
   "description": "site de cuisine avec commentaire utilisateur",
   "main": "server.js",
   "scripts": {
+    "prod": "node server.js",
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Terence",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "mssql": "^10.0.1",
+    "nodemon": "^3.0.1"
+  }
 }
