@@ -1,68 +1,65 @@
 require("dotenv").config(); //<-- Chargement des variables d'environnement(.env)
 
-// ____________________________
+// ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 // VARIABLE_ENV____DEBUT_______>
-
 const { PORT } = process.env; //<--Utilisation du destructuring
-
-// ____________________________
 // VARIABLE_ENV____FIN_________<
-// ____________________________
-//IMPORT_______DEBUT__________>
+// ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 
+// ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+//IMPORT_______DEBUT__________>
 const http = require("http");
 const homeControllers = require("./controllers/home.constroller");
-
-// ____________________________
+const dbUtils = require("./outil/db.utils");
 //IMPORT_______FIN____________<
-// ____________________________
+// ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+// TESTE_SERVER_______________>
+dbUtils.testeDbConnection();
+// TESTE_SERVER_______________<
+// ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 //CREATION_SERVER____DEBUT____>
-
 const server = http.createServer((req, res) => {
   console.log(`URL : ${req.url} / METHODE : ${req.method}`); //<--Info Requete
-
+  // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
   //________ROUTING______DEBUT_________➡️
-  // ______________/___________________
+  // ➖➖➖➖➖➖➖➖➖
+  // ______________ / __________________
   if (req.url === "/") {
-    // acceuil
-    homeControllers.index(req, res);
-    // _____________MENU____________________
+    homeControllers.index(req, res); // acceuil
+
+    // ➖➖➖➖➖➖➖➖➖
+    // ____________ /MENU _______________
   } else if (req.url === "/menu") {
-    // menu
-    homeControllers.menu(req, res);
-    // _______________MENU/:ID__________________
+    homeControllers.menu(req, res); // menu
+    // ➖➖➖➖➖➖➖➖➖
+    // __________ /MENU/:ID _____________
   } else if (req.url === "/menu/:id") {
-    // menuId
-    homeControllers.plat(req, res);
-    // _____________/INFO____________________
+    homeControllers.plat(req, res); // menuId
+    // ➖➖➖➖➖➖➖➖➖
+    // ____________ /INFO _______________
   } else if (req.url === "/info") {
-    // info
-    homeControllers.info(req, res);
-    // ______________:COMMENTAIRE___________________
+    homeControllers.info(req, res); // info
+    // ➖➖➖➖➖➖➖➖➖
+    // _________ :COMMENTAIRE __________
   } else if (req.url === "/commentaire" && req.method === "GET") {
-    // commentaire
-    homeControllers.messageGET(req, res);
-    // ______________:COMMENTAIRE/ADD___________________
+    homeControllers.messageGET(req, res); // commentaire
+    // ➖➖➖➖➖➖➖➖➖
+    // ______ :COMMENTAIRE/ADD _________
   } else if (req.url === "/commentaire/add" && req.method === "POST") {
-    // ajouter commentaire
-    homeControllers.messagePOST(req, res);
-    // _________________________________
+    homeControllers.messagePOST(req, res); // ajouter commentaire
+    // ➖➖➖➖➖➖➖➖➖
+    // _________ ERROR_404 _____________
   } else {
     res.writeHead(404, { "Content-Type": "text/html" });
     res.end("<h1>Page non Trouver</h1>");
-    // _________________________________
-  }
-});
-//________ROUTING______FIN_________⬅️
+  } //________ROUTING______FIN_________⬅️
+  // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+}); //CREATION_SERVER____FIN______<
+// ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 
-// ____________________________
-//CREATION_SERVER____FIN______<
-// ____________________________
+// ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 //DEMARRER_SERVER___DEBUT_____>
-
 server.listen(PORT, () => {
   console.log(`Web Server start on port ${PORT}`); //<--Info Server
-});
-
-// ____________________________
-//DEMARRER_SERVER___FIN_______<
+}); //DEMARRER_SERVER___FIN_______<
+// ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖

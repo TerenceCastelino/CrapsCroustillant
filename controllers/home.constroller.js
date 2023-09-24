@@ -1,4 +1,5 @@
 const ejs = require("ejs");
+const { createDbConnection } = require("../outil/db.utils");
 const cheminRacine = `${require.main.path}/views/home/`;
 
 const promiseRender = (nomFichier, res) => {
@@ -15,7 +16,11 @@ const promiseRender = (nomFichier, res) => {
 };
 
 const homeControllers = {
-  index(req, res) {
+  index: async (req, res) => {
+    //recuperation des données depuis la db
+    const db = await createDbConnection();
+    const result = await db.query("select *from Plats");
+    console.log(result);
     //  / : Page d'accueil du resto (Nom, texte de présentation, images)
     promiseRender("index.ejs", res);
   },
