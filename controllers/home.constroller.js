@@ -20,7 +20,13 @@ const homeControllers = {
     //recuperation des données depuis la db
     const db = await createDbConnection();
     const result = await db.query("select *from Plats");
-    console.log(result);
+    const message = result.recordset.map((row) => {
+      return {
+        plat: row["NomDuPlat"],
+      };
+    });
+
+    console.log(message);
     //  / : Page d'accueil du resto (Nom, texte de présentation, images)
     promiseRender("index.ejs", res);
   },
