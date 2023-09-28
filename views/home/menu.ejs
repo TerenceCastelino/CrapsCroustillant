@@ -3,9 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%-
+'<style>'
++ include(`style.css`)
++ '</style>'
+%>
     <title>Document</title>
   </head>
   <body>
-    <h1>menu</h1>
+    <header>
+      <p><a href="http://localhost:8080/">Acceuil</a></p>
+      <p><a href="http://localhost:8080/menu">Menu</a></p>
+      <p><a href="http://localhost:8080/info">info</a></p>
+      <p><a href="http://localhost:8080/commentaire">Commentaire</a></p>
+    </header>
+   
+  
+      
+    <h1>Menu</h1>
+   
+  
+    
+   <main>
+    <p>
+      <div>
+        <% message.forEach(msg => { %>
+          <p><%= msg.plat %> <strong>Brieve Description :</strong><%= msg.breveDescription %> <strong>Prix :</strong><%= msg.prix %></p>
+        <% }); %>
+        </div>
+    </p>
+  </main>  
   </body>
 </html>

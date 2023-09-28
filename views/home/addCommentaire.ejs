@@ -3,7 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%-
+    '<style>'
+    + include(`style.css`)
+    + '</style>'
+    %>
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <h1>Laissez un commentaire :</h1>
+    <main>
+      <form method="POST" action="/commentaire/add">
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" name="prenom" required /><br /><br />
+
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" /><br /><br />
+
+        <label for="note">Note (0 à 10) :</label>
+        <input
+          type="number"
+          id="note"
+          name="note"
+          min="0"
+          max="10"
+          required
+        /><br /><br />
+
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" required /><br /><br />
+
+        <label for="message">Message (Minimum 10 caractères) :</label><br />
+        <textarea
+          id="message"
+          name="message"
+          rows="4"
+          cols="50"
+          required
+        ></textarea
+        ><br /><br />
+
+        <button type="submit">Envoyer</button>
+      </form>
+      <p>
+      <ul>
+      
+   
+      </ul>
+     
+       
+    </p>
+    </main>
+  </body>
 </html>

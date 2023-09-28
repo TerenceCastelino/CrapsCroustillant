@@ -1,11 +1,9 @@
 require("dotenv").config(); //<-- Chargement des variables d'environnement(.env)
-
 // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 // VARIABLE_ENV____DEBUT_______>
 const { PORT } = process.env; //<--Utilisation du destructuring
 // VARIABLE_ENV____FIN_________<
 // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-
 // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 //IMPORT_______DEBUT__________>
 const http = require("http");
@@ -45,10 +43,12 @@ const server = http.createServer((req, res) => {
     homeControllers.messageGET(req, res); // commentaire
     // ➖➖➖➖➖➖➖➖➖
     // ______ :COMMENTAIRE/ADD _________
-  } else if (req.url === "/commentaire/add" && req.method === "POST") {
-    homeControllers.messagePOST(req, res); // ajouter commentaire
+  } else if (req.url === "/commentaire/add" && req.method === "GET") {
+    homeControllers.messagePOSTDisplay(req, res); // ajouter commentaire
     // ➖➖➖➖➖➖➖➖➖
     // _________ ERROR_404 _____________
+  } else if (req.url === "/commentaire/add" && req.method === "POST") {
+    homeControllers.messagePOST(req, res);
   } else {
     res.writeHead(404, { "Content-Type": "text/html" });
     res.end("<h1>Page non Trouver</h1>");
@@ -56,7 +56,6 @@ const server = http.createServer((req, res) => {
   // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 }); //CREATION_SERVER____FIN______<
 // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-
 // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 //DEMARRER_SERVER___DEBUT_____>
 server.listen(PORT, () => {

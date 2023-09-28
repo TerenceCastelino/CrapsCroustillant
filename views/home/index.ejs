@@ -3,10 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%-
+'<style>'
++ include(`style.css`)
++ '</style>'
+%>
     <title>Document</title>
   </head>
   <body>
+    <header>
+      <p><a href="http://localhost:8080/">Acceuil</a></p>
+      <p><a href="http://localhost:8080/menu">Menu</a></p>
+      <p><a href="http://localhost:8080/info">info</a></p>
+      <p><a href="http://localhost:8080/commentaire">Commentaire</a></p>
+    </header>
+   
+  
+      
     <h1>Le Crabe Croustillant</h1>
+    
+    <main>
+  
     <p>
       Bienvenue au Crabe Croustillant, l'endroit où l'océan rencontre la
       délicieuse cuisine sous-marine ! Notre restaurant est une oasis gourmande
@@ -51,17 +68,15 @@
       table dès maintenant pour une expérience inégalée !
       <br />
       <br>
-      <strong>Heures d'ouverture :</strong>
+   
       <ul>
-        <li>Lundi à Vendredi : 11h00 - 22h00</li>
-        <li>Samedi et Dimanche : 10h00 - 23h00</li>
+      
+   
       </ul>
-      <p>Adresse : [Adresse du restaurant]
-        <br>
-        Téléphone : [Numéro de téléphone]</p>
+     
+       
     </p>
-    Suivez-nous sur les réseaux sociaux pour les dernières mises à jour, offres spéciales et événements passionnants !
-    <br>
-    Venez créer des souvenirs extraordinaires au Crabe Croustillant - où la mer rencontre la saveur !
-  </body>
+    
+  </main>
+</body>
 </html>

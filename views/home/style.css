@@ -1,0 +1,35 @@
+main {
+  margin: 10px 300px;
+  border: 3px solid black;
+  text-align: center;
+  padding: 20px;
+}
+h1 {
+  color: rgb(3, 3, 3);
+  font-size: 5rem;
+  text-align: center;
+}
+header {
+  display: flex;
+  font-size: 3rem;
+  border: 2px solid black;
+  justify-content: space-around;
+}
+a {
+  text-decoration: none;
+  font-weight: 800;
+}
+a:visited {
+  color: black;
+}
+a:hover {
+  color: rgba(174, 174, 7, 0.753);
+}
+.btn {
+  margin: 0 auto;
+  border: 2px solid black;
+  font-weight: 600;
+  padding: 5px;
+  width: 120px;
+  text-align: center;
+}

@@ -1,19 +1,24 @@
 const ejs = require("ejs");
+const queryString = require("querystring");
+const mssql = require("mssql");
+const fs = require("fs");
 const { createDbConnection } = require("../outil/db.utils");
 const cheminRacine = `${require.main.path}/views/home/`;
-
-const promiseRender = (nomFichier, res) => {
+// ____________________Function___________________________
+const promiseRender = (nomFichier, objet, res, req) => {
   ejs
-    .renderFile(`${cheminRacine}${nomFichier}`)
+    .renderFile(`${cheminRacine}${nomFichier}`, objet)
     .then((pageRender) => {
       res.writeHead(200, { "Content-Type": "text/html" });
       res.end(pageRender);
     })
     .catch((error) => {
+      console.error(error);
       res.writeHead(500);
       res.end();
     });
 };
+// ____________________Function___________________________
 
 const homeControllers = {
   index: async (req, res) => {
@@ -25,35 +30,90 @@ const homeControllers = {
         plat: row["NomDuPlat"],
       };
     });
-
-    console.log(message);
     //  / : Page d'accueil du resto (Nom, texte de présentation, images)
-    promiseRender("index.ejs", res);
+    promiseRender("index.ejs", { message }, res, req);
   },
-
-  menu(req, res) {
-    //  /menu : Liste des plats (Pour chaque plat : Nom, briève description, prix)
-    promiseRender("menu.ejs", res);
+  menu: async (req, res) => {
+    //recuperation des données depuis la db
+    const db = await createDbConnection();
+    const result = await db.query("select *from Plats");
+    const message = result.recordset.map((row) => {
+      return {
+        plat: row["NomDuPlat"],
+        breveDescription: row["BreveDescription"],
+        prix: row["Prix"],
+      };
+    });
+    promiseRender("menu.ejs", { message }, res, req);
   },
 
   plat(req, res) {
-    //  /menu/:id : Detail d'un plat (Nom, description complète, image, prix, allergène)
-    promiseRender("menu.id.ejs", res);
+    promiseRender("menu.id.ejs", {}, res, req);
   },
 
   info(req, res) {
-    //  /about       : Page d'info du resto
-    promiseRender("info.ejs", res);
+    promiseRender("info.ejs", {}, res, req);
   },
 
-  messageGET(req, res) {
-    //  /comment     : Page de commentaire des clients
-    promiseRender("commentaire.ejs", res);
+  messageGET: async (req, res) => {
+    const db = await createDbConnection();
+    const result = await db.query("select *from Commentaires");
+    const commentaire = result.recordset.map((row) => {
+      return {
+        prenom: row["Prenom"],
+        nom: row["Nom"],
+        note: row["Note"],
+        email: row["Email"],
+        message: row["Message"],
+      };
+    });
+    promiseRender("commentaire.ejs", { commentaire }, res, req);
   },
-
-  messagePOST(req, res) {
+  messagePOSTDisplay: async (req, res) => {
+    try {
+      promiseRender("addCommentaire.ejs", {}, res, req);
+    } catch (error) {
+      console.error(error);
+      res.writeHead(404);
+      res.end();
+    }
+  },
+  messagePOST: async (req, res) => {
     //  /comment/add : Page qui permet à un client d'ajouter un commentaire
-    promiseRender("addCommentaire.ejs", res);
+
+    //promiseRender("addCommentaire.ejs", {}, res, req);
+
+    try {
+      let body = "";
+      req.on("data", (formData) => {
+        body += formData.toString();
+      });
+      console.log(body);
+      req.on("end", async () => {
+        const data = queryString.parse(body);
+
+        console.log(data);
+
+        const db = await createDbConnection();
+        const sqlQuery = new mssql.PreparedStatement(db);
+        sqlQuery.input("prenom", mssql.NVarChar);
+        sqlQuery.input("nom", mssql.NVarChar);
+        sqlQuery.input("note", mssql.Int);
+        sqlQuery.input("email", mssql.NVarChar);
+        sqlQuery.input("message", mssql.NVarChar);
+
+        await sqlQuery.prepare(
+          "INSERT INTO [Commentaires](prenom,nom,note,email,message)VALUES(@prenom,@nom,@note,@email,@message)"
+        );
+        await sqlQuery.execute(data);
+        res.writeHead(302, { location: "/commentaire" });
+        res.end();
+      });
+    } catch (error) {
+      console.error(error);
+      res.writeHead(500);
+      res.end();
+    }
   },
 };
 module.exports = homeControllers;

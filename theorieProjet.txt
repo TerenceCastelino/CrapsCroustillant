@@ -47,3 +47,9 @@ Modèle des données
    - un message (Minimum 10 caractères)
    
 _____________|<|
+Probleme
+
+ image
+ cree le menu id automatiser (plus ou moin trouver)
+ faire apparaitre les nouveau commentaire sur la page de vu commentaire (regarder la fin de la video)
+
