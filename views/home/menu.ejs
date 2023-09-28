@@ -28,7 +28,7 @@
     <p>
       <div>
         <% message.forEach(msg => { %>
-          <p><%= msg.plat %> <strong>Brieve Description :</strong><%= msg.breveDescription %> <strong>Prix :</strong><%= msg.prix %></p>
+          <p><%= msg.plat %> <strong>Brieve Description :</strong><%= msg.breveDescription %> <strong>Prix :</strong><%= msg.prix %> <a href="/menu-details?id=<%= msg.id %>" ><%= msg.plat %></a></p>
         <% }); %>
         </div>
     </p>

@@ -9,6 +9,8 @@ const { PORT } = process.env; //<--Utilisation du destructuring
 const http = require("http");
 const homeControllers = require("./controllers/home.constroller");
 const dbUtils = require("./outil/db.utils");
+const url = require("url");
+const queryString = require("querystring");
 //IMPORT_______FIN____________<
 // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 // TESTE_SERVER_______________>
@@ -18,6 +20,10 @@ dbUtils.testeDbConnection();
 //CREATION_SERVER____DEBUT____>
 const server = http.createServer((req, res) => {
   console.log(`URL : ${req.url} / METHODE : ${req.method}`); //<--Info Requete
+  const parsed = url.parse(req.url);
+  const query = queryString.parse(parsed.query);
+  const id = query.id;
+
   // ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
   //________ROUTING______DEBUT_________➡️
   // ➖➖➖➖➖➖➖➖➖
@@ -31,8 +37,8 @@ const server = http.createServer((req, res) => {
     homeControllers.menu(req, res); // menu
     // ➖➖➖➖➖➖➖➖➖
     // __________ /MENU/:ID _____________
-  } else if (req.url === "/menu/:id") {
-    homeControllers.plat(req, res); // menuId
+  } else if (req.url === "/menu-details?id=" + id) {
+    homeControllers.plat(req, res, id); // menuId
     // ➖➖➖➖➖➖➖➖➖
     // ____________ /INFO _______________
   } else if (req.url === "/info") {

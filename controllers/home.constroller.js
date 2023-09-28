@@ -4,6 +4,7 @@ const mssql = require("mssql");
 const fs = require("fs");
 const { createDbConnection } = require("../outil/db.utils");
 const cheminRacine = `${require.main.path}/views/home/`;
+
 // ____________________Function___________________________
 const promiseRender = (nomFichier, objet, res, req) => {
   ejs
@@ -19,6 +20,29 @@ const promiseRender = (nomFichier, objet, res, req) => {
     });
 };
 // ____________________Function___________________________
+// ____________________Function__Images___________________
+const promiseRenderImage = (nomFichier, objet, res, req, image) => {
+  ejs
+    .renderFile(`${cheminRacine}${nomFichier}`, objet, image)
+    .then((pageRender) => {
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(pageRender);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.writeHead(500);
+      res.end();
+    });
+};
+
+// ____________________Function__Images___________________
+// ____________________Function___________________________
+const imageToBase64 = (imagePath) => {
+  const bitmap = fs.readFileSync(imagePath);
+
+  return new Buffer.from(bitmap).toString("base64");
+};
+// ____________________Function___________________________
 
 const homeControllers = {
   index: async (req, res) => {
@@ -30,8 +54,9 @@ const homeControllers = {
         plat: row["NomDuPlat"],
       };
     });
+    const image = imageToBase64(`${cheminRacine}asset/image/CC.jpg`);
     //  / : Page d'accueil du resto (Nom, texte de présentation, images)
-    promiseRender("index.ejs", { message }, res, req);
+    promiseRenderImage("index.ejs", { message, image }, res, req);
   },
   menu: async (req, res) => {
     //recuperation des données depuis la db
@@ -39,6 +64,7 @@ const homeControllers = {
     const result = await db.query("select *from Plats");
     const message = result.recordset.map((row) => {
       return {
+        id: row["ID"],
         plat: row["NomDuPlat"],
         breveDescription: row["BreveDescription"],
         prix: row["Prix"],
@@ -47,12 +73,25 @@ const homeControllers = {
     promiseRender("menu.ejs", { message }, res, req);
   },
 
-  plat(req, res) {
-    promiseRender("menu.id.ejs", {}, res, req);
+  plat: async (req, res, id) => {
+    console.log("le plat" + id);
+
+    const db = await createDbConnection();
+    const result = await db.query(`select * from plats where id = '${id}'`);
+    const message = result.recordset.map((row) => {
+      return {
+        id: row["ID"],
+        plat: row["NomDuPlat"],
+        breveDescription: row["Description"],
+        allergenes: row["Allergenes"],
+        prix: row["Prix"],
+      };
+    });
+    promiseRender("menu.id.ejs", { message }, res, req);
   },
 
   info(req, res) {
-    promiseRender("info.ejs", {}, res, req);
+    promiseRender("info.ejs", { message, id }, res, req);
   },
 
   messageGET: async (req, res) => {

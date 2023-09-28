@@ -3,8 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../public/style.css" />
+    <%-
+    '<style>'
+    + include(`style.css`)
+    + '</style>'
+    %>
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <main>
+      <div>mon image</div>
+      <% message.forEach(msg => { %>
+        <p><%= msg.plat %> <strong>Brieve Description :</strong><%= msg.breveDescription %> <strong>Prix :</strong><%= msg.prix %> <a href="/menu/?id=<%= msg.id %>" ><%= msg.plat %></a></p>
+      <% }); %>
+    </main>
+    <p><ul><li><li></li></li></ul></p>
+  </body>
 </html>
