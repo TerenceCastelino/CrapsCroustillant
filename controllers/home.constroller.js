@@ -91,7 +91,7 @@ const homeControllers = {
   },
 
   info(req, res) {
-    promiseRender("info.ejs", { message, id }, res, req);
+    promiseRender("info.ejs", {}, res, req);
   },
 
   messageGET: async (req, res) => {
